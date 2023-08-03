@@ -48,11 +48,22 @@
 		}
 		return isURLEligible;
 	};
+
+	const isDuplicate = (URL) => {
+		if ($links.includes(URL)) {
+			addInput.setCustomValidity('Duplicate URL');
+			addInput.reportValidity();
+            return true;
+        }
+        else return false;
+	};
+
 	const handleSubmit = () => {
 		const urlObj = parseUrl(URL);
 		if (!urlObj) return;
 		const isURLEligible = checkURLEligibility(urlObj);
 		if (!isURLEligible) return;
+        if (isDuplicate(URL)) return;
 		links.update((links) => [...links, URL]);
 		//$mutation.mutate(URL);
 	};

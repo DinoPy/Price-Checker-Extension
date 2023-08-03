@@ -11,4 +11,5 @@
 	{#each $links as link}
 		<Product prod={link} />
 	{/each}
+    <button on:click={links.set(Array.from($links))}> Reset All </button>
 </div>

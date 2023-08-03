@@ -1,14 +1,21 @@
 <script>
-	export let prod;
 	import { useMutation } from '@sveltestack/svelte-query';
 	import axios from 'axios';
+    import {fade} from 'svelte/transition';
+    import {links} from '../../../stores/products.js';
 
+	export let prod;
 	const mutation = useMutation((url) =>
 		axios.post('http://localhost:3001/api/scraper/test', { url: url })
 	);
 
 	$mutation.mutate(prod);
-	$: console.log($mutation.isSuccess);
+
+    const remove = () => {
+        links.update(products => products.filter(p => p !== prod));
+    };
+
+    $: console.log($links);
 </script>
 
 {#if $mutation.isLoading}
@@ -16,13 +23,15 @@
 {:else if $mutation.isError}
 	<p>Error</p>
 {:else if $mutation.isSuccess}
-	<div class="product-container">
+	<div class="product-container" transition:fade>
 		<img src={$mutation.data.data.data.src} alt={$mutation.data.data.data} />
 		<div>
 			<a href={$mutation.data.data.data.url}>
 				<h3>{$mutation.data.data.data.title}</h3>
 			</a>
 			<p>{$mutation.data.data.data.price}</p>
+            <button on:click={remove}> Remove </button>
+            <button on:click={$mutation.mutate(prod)}> Reset  </button>
 		</div>
 	</div>
 {/if}
