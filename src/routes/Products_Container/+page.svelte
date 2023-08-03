@@ -1,0 +1,14 @@
+<script>
+	import { products, links } from '../../stores/products';
+	import Product from './Product/+page.svelte';
+</script>
+
+<div>
+	<!-- {#each Object.keys($products) as itemName}
+		<Product prod={{ ...$products[itemName] }} />
+	{/each} -->
+
+	{#each $links as link}
+		<Product prod={link} />
+	{/each}
+</div>

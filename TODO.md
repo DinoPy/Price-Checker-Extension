@@ -1,0 +1,11 @@
+- Find out how to split the product items into individual components
+- Find a way to call from the product component a function in the parent one to act as a remove function.
+- Look into animations for on mount and on unmount
+- Format the container box and split them on store
+- Find a way to refetch on demand - maybe move the query to individual product page where that will be rendered using only the URL and skeleton and following loading population of the page
+- Create skeletons for loading
+- Find a way to save previous product price
+- Look into a different way of scraping that hopefully is less likely to cause a human check
+- Save URLs to localStorage
+
+- Try fetching data from the websites using node JS.
