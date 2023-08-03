@@ -8,7 +8,7 @@
 		<Product prod={{ ...$products[itemName] }} />
 	{/each} -->
 
-	{#each $links as link}
+	{#each $links as link (link)}
 		<Product prod={link} />
 	{/each}
     <button on:click={links.set(Array.from($links))}> Reset All </button>
