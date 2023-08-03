@@ -20,7 +20,7 @@
     $: console.log($links);
 </script>
 
-<div class="product-container" in:fade={{duration:300}} out:fade={{duration:1500}} animation:flip>
+<div class="product-container" in:fade={{duration:500}} out:fade={{duration:500}} animation:flip>
     {#if $mutation.isLoading}
             <div class="img-replacement loading" />
             <div>
