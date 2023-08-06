@@ -2,6 +2,7 @@
     import { useMutation } from "@sveltestack/svelte-query";
     import axios from "axios";
     import { links, error } from "../../../stores/products.js";
+    import {PERMITED_HOSTS} from '../../../lib/helpers/contants.js';
 
     export let prod;
 
@@ -9,15 +10,27 @@
         links.update((links) => links.filter((l) => l !== prod));
         localStorage.setItem('urls', JSON.stringify($links));
     };
+
+    const getHost = () => {
+        let URL = new window.URL(prod)
+        const host = URL.host;
+        URL = null;
+        const currentHost = PERMITED_HOSTS.filter(h => host === h.host)
+        return currentHost[0];
+    }
     const mutation = useMutation((url) =>
         axios.post("http://localhost:3000/api/scraper/", { url: url }),
         {
             onError: (err) => {
-                remove()
-                error.update(e => ({...e, isError: !e.isError, message: err.response.data.error}));
+                if (err.response.status === 404) {
+                    remove()
+                    error.update(e => ({...e, isError: !e.isError, message: err.response.data.error}));
+                }
             }
         }
     );
+    const host = getHost();
+    console.log(host);
     $mutation.mutate(prod);
 </script>
 
@@ -32,6 +45,8 @@
                 <div class="button-replacement loading" />
             </div>
         </div>
+    {:else if $mutation.isError}
+         <div> Error... Try again later </div>
     {:else if $mutation.isSuccess}
         <img
             class="preview-img"
@@ -51,6 +66,7 @@
                     <img class="icon" src="images/delete.svg" alt="Remove" />
                 </button>
             </div>
+            <img class="store-icon" src={host.icon}/>
         </div>
     {/if}
 </div>
@@ -138,5 +154,12 @@
         to {
             background-position-x: -200%;
         }
+    }
+
+    .store-icon {
+        width: 15px;
+        position: absolute;
+        top: 8px;
+        right: 8px;
     }
 </style>

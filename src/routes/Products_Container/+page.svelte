@@ -11,7 +11,7 @@
         <div
         in:receive={{ key: link }}
         out:send={{ key: link }}
-        animate:flip={{ duration: 3000 }}
+        animate:flip={{ duration: 1000 }}
         >
             <Product prod={link} />
         </div>
@@ -32,6 +32,7 @@
     @media (max-width: 1800px) {
         .container {
             grid-template-columns: 1fr 1fr 1fr;
+            font-size: 1.2em;
         }
     }
     @media (max-width: 1200px) {
@@ -42,6 +43,7 @@
     @media (max-width: 600px) {
         .container {
             grid-template-columns: 1fr;
+            font-size: 1em;
         }
     }
 </style>

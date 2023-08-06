@@ -2,15 +2,9 @@
 	import axios from 'axios';
 	import PopUp from '../PopUp/+page.svelte';
 	import { products, links } from '../../stores/products';
+    import {PERMITED_HOSTS} from '../../lib/helpers/contants.js';
 
 	let URL = '';
-	const PERMITED_HOSTS = [
-		'store.epicgames',
-		'steam',
-		'pcgarage',
-		'evomag',
-		'emag',
-	];
 	let addInput;
 
 	const parseUrl = (URL) => {
@@ -26,7 +20,7 @@
 	const checkURLEligibility = (urlObj) => {
 		let isURLEligible = false;
 		for (let i = 0; i < PERMITED_HOSTS.length; i++) {
-			if (urlObj.host.includes(PERMITED_HOSTS[i])) {
+			if (urlObj.host = PERMITED_HOSTS[i].host) {
 				isURLEligible = true;
 			}
 		}
@@ -40,6 +34,7 @@
 	};
 
 	const isDuplicate = (URL) => {
+        // loop over the list and check if each string includes the new url
 		if ($links.includes(URL.trim())) {
 			addInput.setCustomValidity('Duplicate URL');
 			addInput.reportValidity();
