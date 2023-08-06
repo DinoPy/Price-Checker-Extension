@@ -18,8 +18,9 @@
         const currentHost = PERMITED_HOSTS.filter(h => host === h.host)
         return currentHost[0];
     }
+    const host = getHost();
     const mutation = useMutation((url) =>
-        axios.post("http://localhost:3000/api/scraper/", { url: url }),
+        axios.post("http://localhost:3000/api/scraper/", { url: url, details: host }),
         {
             onError: (err) => {
                 if (err.response.status === 404) {
@@ -29,8 +30,6 @@
             }
         }
     );
-    const host = getHost();
-    console.log(host);
     $mutation.mutate(prod);
 </script>
 
@@ -54,7 +53,7 @@
             alt='Preview image'
         />
         <div>
-            <a href={$mutation.data.data.data.url}>
+            <a href={$mutation.data.data.data.url} target='_blank'>
                <h2>{$mutation.data.data.data.title}</h2>
             </a>
             <p>{$mutation.data.data.data.price}</p>
@@ -66,7 +65,12 @@
                     <img class="icon" src="images/delete.svg" alt="Remove" />
                 </button>
             </div>
-            <img class="store-icon" src={host.icon}/>
+            <div class="icons">
+                {#if $mutation.data.data.data.isGenius}
+                    <img class="store-icon" src='images/genius.svg'/>
+                {/if}
+                <img class="store-icon" src={host.icon}/>
+            </div>
         </div>
     {/if}
 </div>
@@ -75,7 +79,7 @@
     .product-container {
         height: fit-content;
         width: 100%;
-        padding: 0.6em;
+        padding: 1em;
         background-color: var(--secondary);
         border-radius: 1em;
         display: flex;
@@ -114,6 +118,14 @@
         bottom: 0;
         right: 0;
         width: fit-content;
+        display: flex;
+        align-items:center;
+        justify-content:center;
+    }
+
+    .isGenius {
+        font-family: Arial;
+        display: inline;
     }
 
     .img-replacement {
@@ -157,9 +169,11 @@
     }
 
     .store-icon {
-        width: 15px;
+        height: 15px;
+    }
+    .icons {
         position: absolute;
-        top: 8px;
-        right: 8px;
+        top: 6px;
+        right: 6px;
     }
 </style>

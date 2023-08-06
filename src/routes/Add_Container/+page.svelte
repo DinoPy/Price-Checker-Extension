@@ -20,16 +20,15 @@
 	const checkURLEligibility = (urlObj) => {
 		let isURLEligible = false;
 		for (let i = 0; i < PERMITED_HOSTS.length; i++) {
-			if (urlObj.host = PERMITED_HOSTS[i].host) {
+			if (urlObj.host === PERMITED_HOSTS[i].host) {
 				isURLEligible = true;
 			}
 		}
 		if (!isURLEligible) {
-			addInput.setCustomValidity(
-				'Accepted links: EpicGames, Steam, PcGarage, Evomag, Emag. Only the product page link works!'
-			);
+			addInput.setCustomValidity(`Only allowed ${PERMITED_HOSTS.map(p => p.name).join(", ")}`);
 			addInput.reportValidity();
 		}
+        console.log(isURLEligible);
 		return isURLEligible;
 	};
 
