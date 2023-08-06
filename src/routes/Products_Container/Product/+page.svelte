@@ -1,23 +1,27 @@
 <script>
     import { useMutation } from "@sveltestack/svelte-query";
     import axios from "axios";
-    import { links } from "../../../stores/products.js";
+    import { links, error } from "../../../stores/products.js";
 
     export let prod;
-    const mutation = useMutation((url) =>
-        axios.post("http://localhost:3001/api/scraper/test", { url: url })
-    );
-
-    $mutation.mutate(prod);
 
     const remove = () => {
         links.update((links) => links.filter((l) => l !== prod));
         localStorage.setItem('urls', JSON.stringify($links));
     };
+    const mutation = useMutation((url) =>
+        axios.post("http://localhost:3000/api/scraper/", { url: url }),
+        {
+            onError: (err) => {
+                remove()
+                error.update(e => ({...e, isError: !e.isError, message: err.response.data.error}));
+            }
+        }
+    );
+    $mutation.mutate(prod);
 </script>
 
-<div
-    class="product-container">
+<div class="product-container">
     {#if $mutation.isLoading}
         <div class="img-replacement loading" />
         <div>
@@ -28,8 +32,6 @@
                 <div class="button-replacement loading" />
             </div>
         </div>
-    {:else if $mutation.isError}
-        <p>Error</p>
     {:else if $mutation.isSuccess}
         <img
             class="preview-img"

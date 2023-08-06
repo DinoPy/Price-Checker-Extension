@@ -10,5 +10,6 @@
 - Save URLs to localStorage
 - Find a way to get the response cookies and apply them to future fetches to the same store;
 - Delete URL from input once scraped.
+- Add a little bit of error handler.
 
 - Try fetching data from the websites using node JS. :checked:

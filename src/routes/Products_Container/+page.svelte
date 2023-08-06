@@ -1,5 +1,5 @@
 <script>
-	import { products, links } from '../../stores/products';
+	import { products, links, error } from '../../stores/products';
 	import Product from './Product/+page.svelte';
     import PopUp from '../PopUp/+page.svelte';
     import { flip } from 'svelte/animate';
@@ -17,6 +17,9 @@
         </div>
     {/each}
 
+    {#if $error.isError}
+        <PopUp message={$error.message} timeout={$error.duration} />
+    {/if}
     <!-- <button on:click={links.set(Array.from($links))}> Reset All </button> -->
 </div>
 

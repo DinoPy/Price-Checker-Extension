@@ -1,5 +1,4 @@
 <script>
-	import { useMutation } from '@sveltestack/svelte-query';
 	import axios from 'axios';
 	import PopUp from '../PopUp/+page.svelte';
 	import { products, links } from '../../stores/products';
@@ -14,15 +13,6 @@
 	];
 	let addInput;
 
-	const mutation = useMutation(
-		(URL) => axios.post('http://localhost:3000/api/scraper', { url: URL }),
-		{
-			onSuccess: (data) => {
-				const response = data.data.data;
-				products.set({ ...$products, [response.title]: { ...response } });
-			},
-		}
-	);
 	const parseUrl = (URL) => {
 		try {
 			return new window.URL(URL);
@@ -50,7 +40,7 @@
 	};
 
 	const isDuplicate = (URL) => {
-		if ($links.includes(URL)) {
+		if ($links.includes(URL.trim())) {
 			addInput.setCustomValidity('Duplicate URL');
 			addInput.reportValidity();
             return true;
@@ -85,14 +75,6 @@
 	</div>
 	<button class="url_add_button"> Add </button>
 </form>
-
-<div>
-	{#if $mutation.isLoading}
-		<PopUp message={'Loading...'} />
-	{:else if $mutation.isError}
-		<PopUp message={$mutation.error.message} />
-	{/if}
-</div>
 
 <style>
 	.add_container {
