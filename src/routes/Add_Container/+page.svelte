@@ -65,7 +65,7 @@
 		if (!isURLEligible) return;
         if (isDuplicate(URL)) return;
 		links.update((links) => [...links, URL]);
-		//$mutation.mutate(URL);
+        localStorage.setItem('urls', JSON.stringify($links));
 	};
 	const handleChange = () => {
 		addInput.setCustomValidity('');

@@ -6,7 +6,6 @@
 	:global(*) {
 		margin: 0;
 		box-sizing: border-box;
-		transition: all ease-in 200ms;
 	}
     :root {
         --primary: hsl(40 100% 50% / 1);

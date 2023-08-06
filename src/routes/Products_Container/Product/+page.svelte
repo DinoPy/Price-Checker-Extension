@@ -12,6 +12,7 @@
 
     const remove = () => {
         links.update((links) => links.filter((l) => l !== prod));
+        localStorage.setItem('urls', JSON.stringify($links));
     };
 </script>
 
