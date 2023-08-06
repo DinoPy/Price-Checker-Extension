@@ -99,27 +99,25 @@
 		display: flex;
 		align-items: center;
 		justify-self: center;
+        margin-bottom: 1em;
 	}
 	.input_container {
 		align-self: stretch;
 		flex-grow: 1;
 		flex-shrink: 1;
-		margin-right: 0.1em;
+		margin-right: 0.3em;
 	}
 	.url_add_input {
 		width: 100%;
 		height: 100%;
 		padding: 0.5em 1em;
 		color: #252525;
-		border: 2px solid orange;
+		border: 2px solid var(--accent);
 		border-radius: 0.5em;
-	}
-	.url_add_input:invalid {
-		background-color: lightred;
 	}
 	.url_add_button {
 		padding: 0.2em 1.5em;
-		background-color: orange;
+		background-color: var(--accent);
 		border: none;
 		border-radius: 0.2rem;
 		font-weight: 700;

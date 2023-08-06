@@ -4,9 +4,8 @@
 <style>
     header {
         height: 80px;
-        background-color: #FCAE51;
         color: #fff;
         padding: 1rem;
-        margin-bottom: 2em;
+        background-color: var(--primary);
     }
 </style>

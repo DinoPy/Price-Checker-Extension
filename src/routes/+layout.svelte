@@ -1,14 +1,28 @@
-<script>
-	import Header from './Header/+page.svelte';
-</script>
 
-<Header />
 <slot />
 
 <style>
+      @import url('https://fonts.googleapis.com/css2?family=Handjet:wght@300;400&display=swap');
 	:global(*) {
 		margin: 0;
 		box-sizing: border-box;
 		transition: all ease-in 200ms;
 	}
+    :root {
+        --primary: hsl(40 100% 50% / 1);
+        --secondary: hsl(40 83% 95% / 1);
+        --accent: hsl(40 93% 57% / 1);
+        --background: #fdfdfd;
+        --textColor: #020500;
+
+        --text-primary: 'Handjet', cursive;
+        --text-secondary: 'Arial';
+    }
+    :global(body) {
+        background-color: var(--background);
+        font-family: var(--text-primary);
+    }
+    :global(a) {
+        color: black;
+    }
 </style>
