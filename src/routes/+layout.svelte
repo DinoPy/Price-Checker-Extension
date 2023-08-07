@@ -1,4 +1,3 @@
-
 <slot />
 
 <style>
@@ -20,8 +19,9 @@
     :global(body) {
         background-color: var(--background);
         font-family: var(--text-primary);
+        color: var(--textColor);
     }
     :global(a) {
-        color: black;
+        color: var(--textColor);
     }
 </style>

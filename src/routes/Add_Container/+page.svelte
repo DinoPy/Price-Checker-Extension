@@ -9,7 +9,7 @@
 
 	const parseUrl = (URL) => {
 		try {
-			return new window.URL(URL);
+            if(typeof window !== 'undefined') return new window.URL(URL);
 		} catch {
 			addInput.setCustomValidity('Invalid URL');
 			addInput.reportValidity();

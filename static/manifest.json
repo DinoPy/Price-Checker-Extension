@@ -1,0 +1,11 @@
+{
+    "name": "Price checker",
+    "description": "Tool meant to check the prices for you on favorited products",
+    "version": "1.0.0",
+    "manifest_version": 3,
+    "action": {
+        "default_title": "Price checker",
+        "default_icon": "favicon.png",
+        "default_popup": "index.html"
+  }
+}

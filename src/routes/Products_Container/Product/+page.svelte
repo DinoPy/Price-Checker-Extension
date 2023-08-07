@@ -14,6 +14,7 @@
     };
 
     const getHost = () => {
+        if(typeof window === 'undefined') return;
         let URL = new window.URL(prod)
         const host = URL.host;
         URL = null;
@@ -25,8 +26,6 @@
         axios.post("http://localhost:3000/api/scraper/", { url: url, details: host }),
         {
             onSuccess: (data) => {
-                console.log(data);
-                console.log(savedPrice);
                 const today = (new Date).toLocaleDateString();
                 if (savedPrice.price === 'No saved price' || savedPrice.date !== today) {
                     localStorage.setItem(prod, JSON.stringify({price: data.data.data.price, date: today}));
@@ -81,9 +80,9 @@
             </div>
             <div class="icons">
                 {#if $mutation.data.data.data.isGenius}
-                    <img class="store-icon" src='images/genius.svg'/>
+                    <img class="store-icon" src='images/genius.svg' alt="Genius"/>
                 {/if}
-                <img class="store-icon" src={host.icon}/>
+                <img class="store-icon" src={host.icon} alt={host.name}/>
             </div>
         </div>
     {/if}

@@ -1,0 +1,1 @@
+.popup-container.svelte-d0vve6{width:fit-content;min-height:80px;background-color:var(--accent);border-radius:1em;padding:.5em 1em;position:absolute;top:3em;right:10px;animation:svelte-d0vve6-pop-up ease-in .2s;font-size:.8em;font-family:Arial}@keyframes svelte-d0vve6-pop-up{0%{right:-250px}to{right:10px}}

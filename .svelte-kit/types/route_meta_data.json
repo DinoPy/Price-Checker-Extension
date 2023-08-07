@@ -1,8 +1,21 @@
 {
-	"/": [],
-	"/Add_Container": [],
-	"/Header": [],
-	"/PopUp": [],
-	"/Products_Container": [],
-	"/Products_Container/Product": []
+	"/": [
+		"src/routes/+layout.js",
+		"src/routes/+layout.js"
+	],
+	"/Add_Container": [
+		"src/routes/+layout.js"
+	],
+	"/Header": [
+		"src/routes/+layout.js"
+	],
+	"/PopUp": [
+		"src/routes/+layout.js"
+	],
+	"/Products_Container": [
+		"src/routes/+layout.js"
+	],
+	"/Products_Container/Product": [
+		"src/routes/+layout.js"
+	]
 }
