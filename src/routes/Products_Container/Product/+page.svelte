@@ -5,10 +5,12 @@
     import {PERMITED_HOSTS} from '../../../lib/helpers/contants.js';
 
     export let prod;
+    $: savedPrice = JSON.parse(localStorage.getItem(prod)) || {price: 'No saved price', date: (new Date).toLocaleDateString()};
 
     const remove = () => {
         links.update((links) => links.filter((l) => l !== prod));
         localStorage.setItem('urls', JSON.stringify($links));
+        localStorage.removeItem(prod);
     };
 
     const getHost = () => {
@@ -22,6 +24,15 @@
     const mutation = useMutation((url) =>
         axios.post("http://localhost:3000/api/scraper/", { url: url, details: host }),
         {
+            onSuccess: (data) => {
+                console.log(data);
+                console.log(savedPrice);
+                const today = (new Date).toLocaleDateString();
+                if (savedPrice.price === 'No saved price' || savedPrice.date !== today) {
+                    localStorage.setItem(prod, JSON.stringify({price: data.data.data.price, date: today}));
+                    savedPrice = {price: data.data.data.price, date: today};
+                }
+            },
             onError: (err) => {
                 if (err.response.status === 404) {
                     remove()
@@ -56,7 +67,10 @@
             <a href={$mutation.data.data.data.url} target='_blank'>
                <h2>{$mutation.data.data.data.title}</h2>
             </a>
-            <p>{$mutation.data.data.data.price}</p>
+            <div class="prices">
+                <p class="currentPrice">{$mutation.data.data.data.price}</p>
+                <p class="savedPrice" title="Yesterday's price">{savedPrice.price} </p>
+            </div>
             <div class="buttons-box">
                 <button on:click={$mutation.mutate(prod)} class="icon-btn">
                     <img class="icon" src="images/refresh.svg" alt="Refresh" />
@@ -77,9 +91,10 @@
 
 <style>
     .product-container {
-        height: fit-content;
+        min-height: fit-content;
+        height: 100%;
         width: 100%;
-        padding: 1em;
+        padding: 0.5em 1em;
         background-color: var(--secondary);
         border-radius: 1em;
         display: flex;
@@ -89,9 +104,12 @@
 
     h2,
     a {
-        width: fit-content;
+        width: 100%;
+        height: 5ch;
         text-decoration: none;
-        word-break:normal;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
     }
 
     .preview-img {
@@ -123,9 +141,22 @@
         justify-content:center;
     }
 
-    .isGenius {
+    .prices {
+        display: flex;
+        gap: .4em;
+        justify-items: center;
         font-family: Arial;
-        display: inline;
+    }
+
+    .savedPrice {
+        font-size: .6em;
+        align-self: end;
+    }
+    .savedPrice::before {
+        content: '('
+    }
+    .savedPrice::after {
+        content: ')'
     }
 
     .img-replacement {

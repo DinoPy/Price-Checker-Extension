@@ -29,18 +29,18 @@
         grid-template-columns: 1fr 1fr 1fr 1fr;
         gap: 1em;
     }
-    @media (max-width: 1800px) {
+    @media (max-width: 2100px) {
         .container {
             grid-template-columns: 1fr 1fr 1fr;
             font-size: 1.2em;
         }
     }
-    @media (max-width: 1200px) {
+    @media (max-width: 1400px) {
         .container {
             grid-template-columns: 1fr 1fr;
         }
     }
-    @media (max-width: 600px) {
+    @media (max-width: 700px) {
         .container {
             grid-template-columns: 1fr;
             font-size: 1em;
