@@ -27,6 +27,7 @@
  */
 declare module '$env/static/private' {
 	export const MANPATH: string;
+	export const npm_package_devDependencies_sveltekit_adapter_chrome_extension: string;
 	export const TERM_PROGRAM: string;
 	export const NODE: string;
 	export const INIT_CWD: string;
@@ -72,6 +73,7 @@ declare module '$env/static/private' {
 	export const npm_package_scripts_build: string;
 	export const npm_config_version_commit_hooks: string;
 	export const XPC_FLAGS: string;
+	export const npm_package_dependencies_tiny_glob: string;
 	export const npm_config_bin_links: string;
 	export const XPC_SERVICE_NAME: string;
 	export const npm_package_devDependencies__sveltejs_adapter_auto: string;
@@ -134,6 +136,7 @@ declare module '$env/static/public' {
 declare module '$env/dynamic/private' {
 	export const env: {
 		MANPATH: string;
+		npm_package_devDependencies_sveltekit_adapter_chrome_extension: string;
 		TERM_PROGRAM: string;
 		NODE: string;
 		INIT_CWD: string;
@@ -179,6 +182,7 @@ declare module '$env/dynamic/private' {
 		npm_package_scripts_build: string;
 		npm_config_version_commit_hooks: string;
 		XPC_FLAGS: string;
+		npm_package_dependencies_tiny_glob: string;
 		npm_config_bin_links: string;
 		XPC_SERVICE_NAME: string;
 		npm_package_devDependencies__sveltejs_adapter_auto: string;

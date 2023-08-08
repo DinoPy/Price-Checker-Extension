@@ -3,9 +3,11 @@
     "description": "Tool meant to check the prices for you on favorited products",
     "version": "1.0.0",
     "manifest_version": 3,
-    "action": {
-        "default_title": "Price checker",
-        "default_icon": "favicon.png",
-        "default_popup": "index.html"
-  }
+    "permissions": ["tabs", "storage"],
+     "background": {
+        "service_worker": "script-crayjt.js"
+      },
+    "chrome_url_overrides": {
+        "newtab": "200.html"
+    }
 }

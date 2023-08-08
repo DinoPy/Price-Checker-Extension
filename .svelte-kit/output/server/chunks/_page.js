@@ -830,7 +830,7 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     return currentHost[0];
   };
   const host = getHost();
-  const mutation = useMutation((url) => axios.post("http://localhost:3000/api/scraper/", { url, details: host }), {
+  const mutation = useMutation((url) => axios.post("https://5af2-82-77-111-230.ngrok-free.app/api/scraper/", { url, details: host }), {
     onSuccess: (data) => {
       const today = (/* @__PURE__ */ new Date()).toLocaleDateString();
       if (savedPrice.price === "No saved price" || savedPrice.date !== today) {

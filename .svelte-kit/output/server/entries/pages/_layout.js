@@ -1,6 +1,8 @@
-const prerender = true;
+const prerender = false;
 const ssr = false;
+const trailingSlash = "always";
 export {
   prerender,
-  ssr
+  ssr,
+  trailingSlash
 };
