@@ -4,9 +4,9 @@
     export let timeout = 5000;
     let isActive = true;
 
-    error.update(e => ({...e, isError:false}));
     setTimeout(() => {
         isActive = false;
+        error.update(e => ({...e, isError:false}));
        },timeout);
 </script>
 

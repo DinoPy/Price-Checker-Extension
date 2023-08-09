@@ -16,5 +16,7 @@ see what happens.
 - Move skeleton to new component.
 - Update skeleton CSS to some relative format.
 - Loop over the list and check if each string includes the new url
+- Add a better error handling and 2 more attempts at getting a response before deletion.
+- Add different color if new price is different than the old one. :checked:
 
 - Try fetching data from the websites using node JS. :checked:

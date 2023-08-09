@@ -3,6 +3,8 @@
     import axios from "axios";
     import { links, error } from "../../../stores/products.js";
     import {PERMITED_HOSTS} from '../../../lib/helpers/contants.js';
+    import {comparePrice} from '../../../lib/helpers/utility_functions.js';
+    import SkeletonLoading from './LoadingSkeleton/+page.svelte';
 
     export let prod;
     $: savedPrice = JSON.parse(localStorage.getItem(prod)) || {price: 'No saved price', date: (new Date).toLocaleDateString()};
@@ -23,7 +25,7 @@
     }
     const host = getHost();
     const mutation = useMutation((url) =>
-        axios.post("http://localhost:3000/api/scraper/", { url: url, details: host}),
+        axios.post("https://random-apis-server.vercel.app/api/scraper/", { url: url, details: host}),
         {
             onSuccess: (data) => {
                 const today = (new Date).toLocaleDateString();
@@ -33,11 +35,12 @@
                 }
             },
             onError: (err) => {
-                // if (err.response.status === 404) {
-                    console.log(err);
+                $mutation.isError = true;
+                $mutation.isLoading = false;
+                if (err.response.status === 404) {
                     remove()
                     error.update(e => ({...e, isError: !e.isError, message: err.response.data.error}));
-                //}
+                }
             }
         }
     );
@@ -46,29 +49,23 @@
 
 <div class="product-container">
     {#if $mutation.isLoading}
-        <div class="img-replacement loading" />
-        <div>
-            <div class="title-replacement loading" />
-            <div class="price-replacement loading" />
-            <div class="buttons-box">
-                <div class="button-replacement loading" />
-                <div class="button-replacement loading" />
-            </div>
-        </div>
+        <SkeletonLoading />
     {:else if $mutation.isError}
          <div> Error... Try again later </div>
     {:else if $mutation.isSuccess}
         <img
             class="preview-img"
             src={$mutation.data.data.data.src}
-            alt='Preview image'
+            alt={$mutation.data.data.data.title}
         />
         <div>
             <a href={$mutation.data.data.data.url} target='_blank'>
                <h2>{$mutation.data.data.data.title}</h2>
             </a>
             <div class="prices">
-                <p class="currentPrice">{$mutation.data.data.data.price}</p>
+                <p class="currentPrice"
+                style={`color:${comparePrice($mutation.data.data.data.price, savedPrice.price, 'green', 'red')}`}
+                >{$mutation.data.data.data.price}</p>
                 <p class="savedPrice" title="Yesterday's price">{savedPrice.price} </p>
             </div>
             <div class="buttons-box">
@@ -94,7 +91,7 @@
         min-height: fit-content;
         height: 100%;
         width: 100%;
-        padding: 0.5em 1em;
+        padding: 1em 1em .5em;
         background-color: var(--secondary);
         border-radius: 1em;
         display: flex;
@@ -159,52 +156,12 @@
         content: ')'
     }
 
-    .img-replacement {
-        width: 100%;
-        height: 7em;
-        aspect-ratio: 21/10;
-        border-radius: 5%;
-    }
-
-    .title-replacement {
-        height: 1.5em;
-        width: 10em;
-        margin-bottom: 5px;
-    }
-    .price-replacement {
-        height: 1.4em;
-        width: 5em;
-        margin-bottom: 5px;
-    }
-    .button-replacement {
-        height: 1.4em;
-        width: 1.6em;
-        display: inline-block;
-    }
-    .loading {
-        background: #eee;
-        background: linear-gradient(
-            110deg,
-            #ececec 8%,
-            #f5f5f5 18%,
-            #ececec 33%
-        );
-        border-radius: 5px;
-        background-size: 200% 100%;
-        animation: 1.5s shine linear infinite;
-    }
-    @keyframes shine {
-        to {
-            background-position-x: -200%;
-        }
-    }
-
     .store-icon {
         height: 15px;
     }
     .icons {
         position: absolute;
-        top: 6px;
-        right: 6px;
+        top: 3px;
+        right: 8px;
     }
 </style>
