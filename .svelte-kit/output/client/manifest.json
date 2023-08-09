@@ -3,7 +3,7 @@
     "description": "Tool meant to check the prices for you on favorited products",
     "version": "1.0.0",
     "manifest_version": 3,
-    "permissions": ["tabs", "storage"],
+    "permissions": ["tabs"],
     "chrome_url_overrides": {
         "newtab": "index.html"
     }

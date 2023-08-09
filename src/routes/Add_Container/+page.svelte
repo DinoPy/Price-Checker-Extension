@@ -74,7 +74,7 @@
 	.add_container {
 		display: flex;
 		align-items: center;
-		justify-self: center;
+		justify-items: center;
         margin-bottom: 1em;
 	}
 	.input_container {

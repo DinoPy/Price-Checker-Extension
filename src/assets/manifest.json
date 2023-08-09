@@ -4,9 +4,6 @@
     "version": "1.0.0",
     "manifest_version": 3,
     "permissions": ["tabs", "storage"],
-     "background": {
-        "service_worker": "script-crayjt.js"
-      },
     "chrome_url_overrides": {
         "newtab": "200.html"
     }

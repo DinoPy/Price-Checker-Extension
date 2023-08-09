@@ -23,7 +23,7 @@
     }
     const host = getHost();
     const mutation = useMutation((url) =>
-        axios.post("https://5af2-82-77-111-230.ngrok-free.app/api/scraper/", { url: url, details: host }),
+        axios.post("http://localhost:3000/api/scraper/", { url: url, details: host}),
         {
             onSuccess: (data) => {
                 const today = (new Date).toLocaleDateString();
@@ -33,10 +33,11 @@
                 }
             },
             onError: (err) => {
-                if (err.response.status === 404) {
+                // if (err.response.status === 404) {
+                    console.log(err);
                     remove()
                     error.update(e => ({...e, isError: !e.isError, message: err.response.data.error}));
-                }
+                //}
             }
         }
     );
@@ -104,7 +105,7 @@
     h2,
     a {
         width: 100%;
-        height: 5ch;
+        font-size: clamp(1em, 0.5rem + 1.2vw, 2em);
         text-decoration: none;
         overflow: hidden;
         text-overflow: ellipsis;
