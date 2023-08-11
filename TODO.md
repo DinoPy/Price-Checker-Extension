@@ -1,7 +1,6 @@
 - Find out how to split the product items into individual components :checked:
 - Find a way to call from the product component a function in the parent one to act as a remove function. :checked:
 - Look into animations for on mount and on unmount - functional but with weird behavior :checked:
-- Format the container box and split them on store
 - Find a way to refetch on demand - maybe move the query to individual product page where that will be rendered using only the URL and skeleton and following loading population of the page :checked:
 - Find a way to do a mass refetch on demand.
 - Create skeletons for loading :checked:
@@ -13,11 +12,12 @@
 - Add a little bit of error handler :checked: - receiving error on frontend + removal of url from list.
 - Check for .app_tag with content "Violent" -> update value of age input and submit -
 see what happens.
-- Move skeleton to new component.
+- Move skeleton to new component. :cecked:
 - Update skeleton CSS to some relative format.
 - Loop over the list and check if each string includes the new url
 - Add a better error handling and 2 more attempts at getting a response before deletion.
 - Add different color if new price is different than the old one. :checked:
-- Filter list based on store.
+- Save the prices so they will only refetch once every x hours if triggered or on manual refetch.
+- Add a PopUp div where multiple errors can stack, add removal animation, ensure multi pop up un related to a single variable works.
 
 - Try fetching data from the websites using node JS. :checked:

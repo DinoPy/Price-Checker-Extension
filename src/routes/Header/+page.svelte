@@ -1,5 +1,5 @@
 <header>
-    <h1> Logo </h1>
+    <h1> Price checker </h1>
 </header>
 <style>
     header {

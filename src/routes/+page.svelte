@@ -6,6 +6,11 @@
 	const queryClient = new QueryClient();
 </script>
 
+<svelte:head>
+    <title> Price checker </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" >
+</svelte:head>
+
 <QueryClientProvider client={queryClient}>
    <Header />
 	<div class="mainContainer">
