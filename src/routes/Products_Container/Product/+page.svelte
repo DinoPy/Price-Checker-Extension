@@ -37,8 +37,8 @@
                     src: data.data.data.src,
                     url: prod,
                     lastFetchTime: +new Date,
-                    isGenius: false,
-                    stock: null
+                    isGenius: data.data.data.isGenius,
+                    stock: data.data.data.stock
                     };
                 if (savedData.prevPrice === 'No saved price' || savedData.date !== today) {
                     dataToSave = {...dataToSave, prevPrice: data.data.data.price, date: today};
@@ -49,7 +49,7 @@
             onError: async (err) => {
                 attempts ++;
                 console.log(prod, attempts, savedData.prevPrice);
-                if (attempts < 1) {
+                if (attempts < 3) {
                     await (new Promise((resolve,reject) => setTimeout(() => {resolve($mutation.mutate(prod))}, 5000)));
                 }
                 else {
@@ -66,7 +66,6 @@
             }
         }
     );
-    console.log(savedData);
     if (savedData.lastFetchTime + REFETCH_TIME < +new Date || savedData.lastFetchTime === null) $mutation.mutate(prod);
 </script>
 
@@ -81,7 +80,7 @@
             src={savedData.src}
             alt={savedData.title}
         />
-        <div>
+        <div class="right-container">
             <a href={savedData.url} target='_blank'>
                <h2>{savedData.title}</h2>
             </a>
@@ -120,18 +119,19 @@
         display: flex;
         gap: 1em;
         position: relative;
+        font-size: clamp(1em, 0.5rem + 1vw, 2em);
     }
-
-    h2,
+    .right-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
     a {
         width: 100%;
-        font-size: clamp(1em, 0.5rem + 1.2vw, 2em);
         text-decoration: none;
         overflow: hidden;
         text-overflow: ellipsis;
-
     }
-
     .preview-img {
         width: 50%;
         height: fit-content;
@@ -139,18 +139,15 @@
         border-radius: 5%;
         align-self: center;
     }
-
     .icon {
         height: 18px;
     }
-
     .icon-btn {
         height: fit-content;
         border: none;
         background-color: inherit;
         cursor: pointer;
     }
-
     .buttons-box {
         position: absolute;
         bottom: 0;
@@ -160,14 +157,13 @@
         align-items:center;
         justify-content:center;
     }
-
     .prices {
+        font-family: var(--text-secondary);
         display: flex;
         gap: .4em;
         justify-items: center;
-        font-family: Arial;
+        font-size: .7em;
     }
-
     .savedData {
         font-size: .6em;
         align-self: end;
@@ -178,7 +174,6 @@
     .savedData::after {
         content: ')'
     }
-
     .store-icon {
         height: 15px;
     }

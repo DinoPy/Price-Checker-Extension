@@ -1,5 +1,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Handjet:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
 * {
     margin: 0;
     box-sizing: border-box;
@@ -11,8 +12,8 @@
     --background: #fdfdfd;
     --textColor: #020500;
 
-    --text-primary: 'Handjet', cursive;
-    --text-secondary: 'Arial';
+    --text-primary: 'Handjet';
+    --text-secondary: 'Open Sans', sans-serif;
 }
 body {
     background-color: var(--background);
