@@ -2,7 +2,7 @@
 	import axios from 'axios';
 	import PopUp from '../PopUp/+page.svelte';
 	import { products, links } from '../../stores/products';
-    import {PERMITED_HOSTS} from '../../lib/helpers/contants.js';
+    import {PERMITED_HOSTS} from '../../lib/helpers/constants.js';
 
 	let URL = '';
 	let addInput;

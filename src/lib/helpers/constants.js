@@ -6,3 +6,5 @@ export const PERMITED_HOSTS = [
     {name: 'Emag', host: 'www.emag.ro', icon: 'images/icons/emag.ico'},
     {name: 'Altex', host: 'altex.ro', icon:'images/icons/altex.ico'}
 ];
+
+export const REFETCH_TIME =  1000 * 60 * 60 * 3;

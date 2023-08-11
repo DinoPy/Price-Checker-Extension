@@ -2,13 +2,13 @@
     import { useMutation } from "@sveltestack/svelte-query";
     import axios from "axios";
     import { links, error } from "../../../stores/products.js";
-    import {PERMITED_HOSTS} from '../../../lib/helpers/contants.js';
+    import {PERMITED_HOSTS, REFETCH_TIME} from '../../../lib/helpers/constants.js';
     import {comparePrice} from '../../../lib/helpers/utility_functions.js';
     import SkeletonLoading from './LoadingSkeleton/+page.svelte';
 
     export let prod;
     let attempts = 0;
-    $: savedPrice = JSON.parse(localStorage.getItem(prod)) || {price: 'No saved price', date: (new Date).toLocaleDateString()};
+    let savedData = JSON.parse(localStorage.getItem(prod)) || {prevPrice: 'No saved price', date: (new Date).toLocaleDateString(), title: null, currentPrice: null, src: null, url: null, lastFetchTime: null, isGenius: false, stock: null};
 
     const remove = () => {
         links.update((links) => links.filter((l) => l !== prod));
@@ -30,34 +30,44 @@
         {
             onSuccess: (data) => {
                 const today = (new Date).toLocaleDateString();
-                if (savedPrice.price === 'No saved price' || savedPrice.date !== today) {
-                    localStorage.setItem(prod, JSON.stringify({price: data.data.data.price, date: today}));
-                    savedPrice = {price: data.data.data.price, date: today};
+                let dataToSave = {
+                    ...savedData,
+                    title: data.data.data.title,
+                    currentPrice: data.data.data.price,
+                    src: data.data.data.src,
+                    url: prod,
+                    lastFetchTime: +new Date,
+                    isGenius: false,
+                    stock: null
+                    };
+                if (savedData.prevPrice === 'No saved price' || savedData.date !== today) {
+                    dataToSave = {...dataToSave, prevPrice: data.data.data.price, date: today};
                 }
+                localStorage.setItem(prod, JSON.stringify(dataToSave));
+                savedData = dataToSave;
             },
             onError: async (err) => {
                 attempts ++;
-                console.log(attempts, err);
-                if (attempts < 3) {
-                    await (new Promise((resolve,reject) => setTimeout(() => {resolve()}, 2000)));
-                    $mutation.mutate(prod)
+                console.log(prod, attempts, savedData.prevPrice);
+                if (attempts < 1) {
+                    await (new Promise((resolve,reject) => setTimeout(() => {resolve($mutation.mutate(prod))}, 5000)));
                 }
                 else {
                     attempts = 0;
                     if (err && err.response && err.response.status === 404) {
                         remove()
-                        error.update(e => ({...e, isError: true, message: err.response.data.error}));
+                        error.update(e => ({...e, isError: true, message: err.response.data.error || "Url not compatible at this time"}));
                     }
-                    if (err && err.message === 'Network Error' && savedPrice.price === 'No saved price') {
+                    if (err && err.message === 'Network Error' && savedData.prevPrice === 'No saved price') {
                         remove();
                         error.update(e => ({...e, isError: true, message: 'Incompatible URL'}));
                     };
-                    console.log('here');
                 }
             }
         }
     );
-    $mutation.mutate(prod);
+    console.log(savedData);
+    if (savedData.lastFetchTime > +new Date || savedData.lastFetchTime === null) $mutation.mutate(prod);
 </script>
 
 <div class="product-container">
@@ -65,32 +75,32 @@
         <SkeletonLoading />
     {:else if $mutation.isError}
          <div> Error... Try again later </div>
-    {:else if $mutation.isSuccess}
+    {:else if $mutation.isSuccess || savedData.title !== null}
         <img
             class="preview-img"
-            src={$mutation.data.data.data.src}
-            alt={$mutation.data.data.data.title}
+            src={savedData.src}
+            alt={savedData.title}
         />
         <div>
-            <a href={$mutation.data.data.data.url} target='_blank'>
-               <h2>{$mutation.data.data.data.title}</h2>
+            <a href={savedData.url} target='_blank'>
+               <h2>{savedData.title}</h2>
             </a>
             <div class="prices">
                 <p class="currentPrice"
-                style={`color:${comparePrice($mutation.data.data.data.price, savedPrice.price, 'green', 'red')}`}
-                >{$mutation.data.data.data.price}</p>
-                <p class="savedPrice" title="Yesterday's price">{savedPrice.price} </p>
+                style={`color:${comparePrice(savedData.currentPrice, savedData.prevPrice, 'green', 'red')}`}
+                >{savedData.currentPrice}</p>
+                <p class="savedData" title="Yesterday's price">{savedData.prevPrice} </p>
             </div>
             <div class="buttons-box">
                 <button on:click={() => $mutation.mutate(prod)} class="icon-btn">
                     <img class="icon" src="images/refresh.svg" alt="Refresh" />
                 </button>
-                <button on:click={remove} class="icon-btn">
+                <button on:click={() => remove()} class="icon-btn">
                     <img class="icon" src="images/delete.svg" alt="Remove" />
                 </button>
             </div>
             <div class="icons">
-                {#if $mutation.data.data.data.isGenius}
+                {#if savedData.isGenius}
                     <img class="store-icon" src='images/genius.svg' alt="Genius"/>
                 {/if}
                 <img class="store-icon" src={host.icon} alt={host.name}/>
@@ -158,14 +168,14 @@
         font-family: Arial;
     }
 
-    .savedPrice {
+    .savedData {
         font-size: .6em;
         align-self: end;
     }
-    .savedPrice::before {
+    .savedData::before {
         content: '('
     }
-    .savedPrice::after {
+    .savedData::after {
         content: ')'
     }
 
