@@ -67,7 +67,7 @@
         }
     );
     console.log(savedData);
-    if (savedData.lastFetchTime > +new Date || savedData.lastFetchTime === null) $mutation.mutate(prod);
+    if (savedData.lastFetchTime + REFETCH_TIME < +new Date || savedData.lastFetchTime === null) $mutation.mutate(prod);
 </script>
 
 <div class="product-container">
