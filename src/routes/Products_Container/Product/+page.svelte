@@ -37,27 +37,23 @@
             },
             onError: async (err) => {
                 attempts ++;
-                console.log(attempts);
+                console.log(attempts, err);
                 if (attempts < 3) {
-                    console.log(+new Date);
-                    await (new Promise((resolve,reject) => setTimeout(() => {resolve()}, 1500)));
+                    await (new Promise((resolve,reject) => setTimeout(() => {resolve()}, 2000)));
                     $mutation.mutate(prod)
-                    console.log(+new Date);
                 }
                 else {
                     attempts = 0;
-                    // vv may not happen as response property may not exist.
-                    if (err.response.status === 404) {
+                    if (err && err.response && err.response.status === 404) {
                         remove()
-                        error.update(e => ({...e, isError: !e.isError, message: err.response.data.error}));
+                        error.update(e => ({...e, isError: true, message: err.response.data.error}));
                     }
-                    if (err.message === 'Network Error' && savedPrice.price === 'No saved price') {
+                    if (err && err.message === 'Network Error' && savedPrice.price === 'No saved price') {
                         remove();
-                        error.update(e => ({...e, isError: !e.isError, message: err.response.data.error}));
+                        error.update(e => ({...e, isError: true, message: 'Incompatible URL'}));
                     };
                     console.log('here');
                 }
-                console.log(err.message," ", savedPrice.price);
             }
         }
     );
