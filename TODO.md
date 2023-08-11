@@ -5,7 +5,7 @@
 - Find a way to refetch on demand - maybe move the query to individual product page where that will be rendered using only the URL and skeleton and following loading population of the page :checked:
 - Find a way to do a mass refetch on demand.
 - Create skeletons for loading :checked:
-- Find a way to save previous product price
+- Find a way to save previous product price :checked:
 - Look into a different way of scraping that hopefully is less likely to cause a human check - found optimal way but still doesn't avoid robot check.
 - Save URLs to localStorage :checked:
 - Find a way to get the response cookies and apply them to future fetches to the same store;
@@ -18,5 +18,6 @@ see what happens.
 - Loop over the list and check if each string includes the new url
 - Add a better error handling and 2 more attempts at getting a response before deletion.
 - Add different color if new price is different than the old one. :checked:
+- Filter list based on store.
 
 - Try fetching data from the websites using node JS. :checked:

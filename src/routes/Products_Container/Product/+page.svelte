@@ -7,6 +7,7 @@
     import SkeletonLoading from './LoadingSkeleton/+page.svelte';
 
     export let prod;
+    let attempts = 0;
     $: savedPrice = JSON.parse(localStorage.getItem(prod)) || {price: 'No saved price', date: (new Date).toLocaleDateString()};
 
     const remove = () => {
@@ -34,13 +35,29 @@
                     savedPrice = {price: data.data.data.price, date: today};
                 }
             },
-            onError: (err) => {
-                $mutation.isError = true;
-                $mutation.isLoading = false;
-                if (err.response.status === 404) {
-                    remove()
-                    error.update(e => ({...e, isError: !e.isError, message: err.response.data.error}));
+            onError: async (err) => {
+                attempts ++;
+                console.log(attempts);
+                if (attempts < 3) {
+                    console.log(+new Date);
+                    await (new Promise((resolve,reject) => setTimeout(() => {resolve()}, 1500)));
+                    $mutation.mutate(prod)
+                    console.log(+new Date);
                 }
+                else {
+                    attempts = 0;
+                    // vv may not happen as response property may not exist.
+                    if (err.response.status === 404) {
+                        remove()
+                        error.update(e => ({...e, isError: !e.isError, message: err.response.data.error}));
+                    }
+                    if (err.message === 'Network Error' && savedPrice.price === 'No saved price') {
+                        remove();
+                        error.update(e => ({...e, isError: !e.isError, message: err.response.data.error}));
+                    };
+                    console.log('here');
+                }
+                console.log(err.message," ", savedPrice.price);
             }
         }
     );
@@ -69,7 +86,7 @@
                 <p class="savedPrice" title="Yesterday's price">{savedPrice.price} </p>
             </div>
             <div class="buttons-box">
-                <button on:click={$mutation.mutate(prod)} class="icon-btn">
+                <button on:click={() => $mutation.mutate(prod)} class="icon-btn">
                     <img class="icon" src="images/refresh.svg" alt="Refresh" />
                 </button>
                 <button on:click={remove} class="icon-btn">

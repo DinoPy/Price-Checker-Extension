@@ -1,5 +1,5 @@
 <script>
-	import { products, links, error } from '../../stores/products';
+	import { links, error } from '../../stores/products';
 	import Product from './Product/+page.svelte';
     import PopUp from '../PopUp/+page.svelte';
     import { flip } from 'svelte/animate';
