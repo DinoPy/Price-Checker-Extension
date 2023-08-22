@@ -16,6 +16,7 @@ export const parsePrice = (priceString) => {
     * @return {string}          Based on if a difference is existent the good or bad color is returned.
 */
 export const comparePrice = (newPrice, oldPrice, goodColor, badColor) => {
+    if (newPrice === null || oldPrice === null) return "";
     const newPriceFloat = parsePrice(newPrice);
     const oldPriceFloat = parsePrice(oldPrice);
 

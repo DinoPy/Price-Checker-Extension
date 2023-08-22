@@ -8,7 +8,7 @@
 
     export let prod;
     let attempts = 0;
-    let savedData = JSON.parse(localStorage.getItem(prod)) || {prevPrice: 'No saved price', date: (new Date).toLocaleDateString(), title: null, currentPrice: null, src: null, url: null, lastFetchTime: null, isGenius: false, stock: null};
+    let savedData = JSON.parse(localStorage.getItem(prod)) || {prevPrice: 'No saved price', date: (new Date).toLocaleDateString(), title: null, currentPrice: null, src: null, url: null, lastFetchTime: null, isGenius: false, stock: null, lastPriceUpdate: (new Date).toLocaleString()};
 
     const remove = () => {
         links.update((links) => links.filter((l) => l !== prod));
@@ -26,7 +26,7 @@
     }
     const host = getHost();
     const mutation = useMutation((url) =>
-        axios.post("https://random-apis-server.vercel.app/api/scraper/", { url: url, details: host}),
+        axios.post("http://localhost:3000/api/scraper/", { url: url, details: host}),
         {
             onSuccess: (data) => {
                 const today = (new Date).toLocaleDateString();
@@ -38,11 +38,15 @@
                     url: prod,
                     lastFetchTime: +new Date,
                     isGenius: data.data.data.isGenius,
-                    stock: data.data.data.stock
+                    stock: data.data.data.stock,
                     };
                 if (savedData.prevPrice === 'No saved price' || savedData.date !== today) {
                     dataToSave = {...dataToSave, prevPrice: data.data.data.price, date: today};
                 }
+                if (comparePrice(dataToSave.currentPrice, dataToSave.prevPrice, 'different', 'different') === 'different') {
+                    dataToSave.lastPriceUpdate = (new Date).toLocaleString();
+                };
+                console.log(comparePrice(dataToSave.currentPrice, dataToSave.prevPrice, 'different', 'different'));
                 localStorage.setItem(prod, JSON.stringify(dataToSave));
                 savedData = dataToSave;
             },
@@ -88,7 +92,7 @@
                 <p class="currentPrice"
                 style={`color:${comparePrice(savedData.currentPrice, savedData.prevPrice, 'green', 'red')}`}
                 >{savedData.currentPrice}</p>
-                <p class="savedData" title="Yesterday's price">{savedData.prevPrice} </p>
+                <p class="savedData" title={savedData.lastPriceUpdate}>{savedData.prevPrice} </p>
             </div>
             <div class="buttons-box">
                 <button on:click={() => $mutation.mutate(prod)} class="icon-btn">
