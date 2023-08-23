@@ -50,6 +50,7 @@
         if (isDuplicate(URL)) return;
 		links.update((links) => [...links, URL]);
         localStorage.setItem('urls', JSON.stringify($links));
+        URL = '';
 	};
 	const handleChange = () => {
 		addInput.setCustomValidity('');

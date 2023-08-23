@@ -21,7 +21,7 @@
     onMount(async () => (data = await getGames()));
 </script>
 
-<div>
+<div class="freeGamesContainer">
 {#if data}
     {#each data as game}
         <SimpleProductContainer savedData = {{title: game.title, src: game.keyImages[0].url,   }} host = {PERMITED_HOSTS[0]}   />
@@ -30,10 +30,16 @@
 </div>
 
 <style>
-    div {
+    .freeGamesContainer {
         flex: 2;
-        height: 300px;
         display: flex;
         flex-direction: column;
+        gap: 1em;
+    }
+
+    @media (max-width:1000px) {
+        .freeGamesContainer {
+            flex-direction: row;
+        }
     }
 </style>

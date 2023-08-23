@@ -1,3 +1,4 @@
+
 /**
     * converts price from string to float;
     * @param {string} priceString Price in string format
@@ -25,4 +26,14 @@ export const comparePrice = (newPrice, oldPrice, goodColor, badColor) => {
     if (newPriceFloat > oldPriceFloat) return badColor;
 };
 
-
+/**
+    * Parses the title into a shorter format if needed.
+    * @param {string} title Title string that will be parsed
+    * @return {string}      Parsed version of the title
+*/
+export const parseTitle = (title) => {
+    let splitTitle = title.split(' ');
+    if (splitTitle.length <= 12) return title;
+    let newTitle = splitTitle.splice(0,12).join(' ') + '...';
+    return newTitle;
+}

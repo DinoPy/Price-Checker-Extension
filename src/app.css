@@ -8,6 +8,7 @@
 :root {
     --primary: hsl(40 100% 50% / 1);
     --secondary: hsl(40 83% 95% / 1);
+    --sideColor: lch(86 24.64 78.64);
     --accent: hsl(40 93% 57% / 1);
     --background: #fdfdfd;
     --textColor: #020500;

@@ -31,9 +31,9 @@
     .mainContainer {
         display: flex;
         gap: 1em;
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
     }
-    @media (max-width:700px) {
+    @media (max-width:1000px) {
         .mainContainer {
             flex-direction: column;
         }
@@ -50,7 +50,6 @@
     @media (max-width: 2100px) {
         .productsContainer {
             grid-template-columns: 1fr 1fr 1fr;
-            font-size: 1.2em;
         }
     }
     @media (max-width: 1400px) {
@@ -61,7 +60,6 @@
     @media (max-width: 700px) {
         .productsContainer {
             grid-template-columns: 1fr;
-            font-size: 1em;
         }
     }
 </style>

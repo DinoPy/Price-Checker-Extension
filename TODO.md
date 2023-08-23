@@ -14,7 +14,7 @@
 - Save URLs to localStorage :checked:
 - Find a way to get the response cookies and apply them to future fetches to
   the same store;
-- Delete URL from input once scraped.
+- Delete URL from input once scraped. :checked:
 - Add a little bit of error handler :checked: - receiving error on frontend +
   removal of url from list.
 - Check for .app_tag with content "Violent" -> update value of age input and
