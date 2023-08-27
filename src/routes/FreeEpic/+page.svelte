@@ -1,32 +1,27 @@
 <script>
-    import { onMount } from "svelte";
-    import SimpleProductContainer from "./SimpleProdContainer/+page.svelte";
+    import axios from "axios";
+    import { useMutation, useQueryClient } from "@sveltestack/svelte-query";
     import { PERMITED_HOSTS } from "../../lib/helpers/constants";
+    import SkeletonLoader from "../Products_Container/Product/LoadingSkeleton/+page.svelte";
+    import SimpleProductContainer from "./SimpleProdContainer/+page.svelte";
 
-    $: data = [];
-    const getGames = async () => {
-        const response = await fetch(
-            "http://localhost:3000/api/epicFreeGames",
-            { method: "POST" }
-        );
-        const { data } = await response.json();
-        const currentlyFree = data.Catalog.searchStore.elements.filter(
-            (game) =>
-                game.price.totalPrice.discountPrice === 0 &&
-                game.price.totalPrice.originalPrice !== 0
-        );
-        return currentlyFree;
-    };
-
-    onMount(async () => (data = await getGames()));
+    const mutation = useMutation(
+        () => axios.post("http://localhost:3000/api/epicFreeGames")
+    );
+    $mutation.mutate();
 </script>
 
 <div class="freeGamesContainer">
-{#if data}
-    {#each data as game}
-        <SimpleProductContainer savedData = {{title: game.title, src: game.keyImages[0].url,   }} host = {PERMITED_HOSTS[0]}   />
-    {/each}
-{/if}
+    {#if $mutation.isLoading}
+        <SkeletonLoader />
+    {:else if $mutation.isSuccess}
+        {#each $mutation.data.data as game}
+            <SimpleProductContainer
+                savedData={{ title: game.title, src: game.keyImages[0].url }}
+                host={PERMITED_HOSTS[0]}
+            />
+        {/each}
+    {/if}
 </div>
 
 <style>
@@ -37,7 +32,7 @@
         gap: 1em;
     }
 
-    @media (max-width:1000px) {
+    @media (max-width: 1000px) {
         .freeGamesContainer {
             flex-direction: row;
         }

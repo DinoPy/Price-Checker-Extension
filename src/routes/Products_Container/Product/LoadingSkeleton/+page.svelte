@@ -1,17 +1,21 @@
-
-<div class="img-replacement loading" />
-<div>
-    <div class="title-replacement loading" />
-    <div class="price-replacement loading" />
-    <div class="buttons-box">
-        <div class="button-replacement loading" />
-        <div class="button-replacement loading" />
+<div class="skeleton-loader">
+    <div class="img-replacement loading" />
+    <div>
+        <div class="title-replacement loading" />
+        <div class="price-replacement loading" />
+        <div class="buttons-box">
+            <div class="button-replacement loading" />
+            <div class="button-replacement loading" />
+        </div>
     </div>
 </div>
 
-
-
 <style>
+    .skeleton-loader {
+        display:flex;
+        gap: 1em;
+    }
+
     .img-replacement {
         width: 100%;
         height: 7em;

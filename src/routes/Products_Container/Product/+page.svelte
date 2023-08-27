@@ -6,7 +6,10 @@
         PERMITED_HOSTS,
         REFETCH_TIME,
     } from "../../../lib/helpers/constants.js";
-    import { comparePrice, parseTitle } from "../../../lib/helpers/utility_functions.js";
+    import {
+        comparePrice,
+        parseTitle,
+    } from "../../../lib/helpers/utility_functions.js";
     import SkeletonLoading from "./LoadingSkeleton/+page.svelte";
 
     export let prod;
@@ -41,7 +44,7 @@
     const host = getHost();
     const mutation = useMutation(
         (url) =>
-            axios.post("http://localhost:3000/api/scraper/", {
+            axios.post("http://localhost:3000/api/scraper", {
                 url: url,
                 details: host,
             }),
@@ -131,7 +134,6 @@
         savedData.lastFetchTime === null
     )
         $mutation.mutate(prod);
-
 </script>
 
 <div class="product-container">
@@ -204,7 +206,7 @@
 
 <style>
     .product-container {
-        min-height: 200px;
+        height: 180px;
         width: 100%;
         padding: 1.2em 1em 0.5em;
         background-color: var(--secondary);
@@ -212,7 +214,7 @@
         display: flex;
         gap: 1em;
         position: relative;
-        font-size: clamp(14px, 1vw, 24px);
+        font-size: clamp(14px, 1vw, 18px);
         flex-wrap: wrap;
     }
     .right-container {
@@ -230,8 +232,10 @@
     }
     .previewImgContainer {
         flex: 5;
-        height: min(100%, 250px);
-        align-self: center;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .preview-img {
         max-width: 100%;
