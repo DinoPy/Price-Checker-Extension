@@ -46,6 +46,7 @@
         grid-template-columns: 1fr 1fr 1fr 1fr;
         gap: 1em;
         flex: 8;
+        flex-wrap: wrap;
     }
     @media (max-width: 2100px) {
         .productsContainer {

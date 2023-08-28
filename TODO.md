@@ -35,11 +35,13 @@
   updated}
 - On error, make the container remain visible with an error symbol or hint if
   there was previous content and isn't a new product.
-- Locate price and icons in the same container so they don't overflow each other.
+- Locate price and icons in the same container so they don't overflow each other. :checked:
 - Update the font size so it can go smaller at very small screens
-- Add epic games free as new container
+- Add epic games free as new container :checked:
 - Make epic container stack
-- Clean CSS selectors
+- Clean CSS selectors :checked:
+- Update the server function so fetching can still return none for what was not found OR find a way to sync the failed results with extension.
+-
 
 - Try fetching data from the websites using node JS. :checked:
 - Consider using cron to fetch the data from the websites while offline and

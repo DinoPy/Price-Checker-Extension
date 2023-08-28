@@ -6,9 +6,10 @@
     import SimpleProductContainer from "./SimpleProdContainer/+page.svelte";
 
     const mutation = useMutation(
-        () => axios.post("http://localhost:3000/api/epicFreeGames")
+        () => axios.post("http://194.233.163.205:3000/api/epicFreeGames")
     );
     $mutation.mutate();
+    $: console.log($mutation.data);
 </script>
 
 <div class="freeGamesContainer">

@@ -44,7 +44,7 @@
     const host = getHost();
     const mutation = useMutation(
         (url) =>
-            axios.post("http://localhost:3000/api/scraper", {
+            axios.post(host.name === "Emag" ? "https://random-apis-server.vercel.app/api/scraper" : "http://194.233.163.205:3000/api/scraper", {
                 url: url,
                 details: host,
             }),
@@ -247,6 +247,7 @@
         height: 18px;
     }
     .icon-btn {
+        object-fit: fill;
         height: fit-content;
         border: none;
         background-color: inherit;
