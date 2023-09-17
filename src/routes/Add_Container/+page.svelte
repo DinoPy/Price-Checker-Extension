@@ -1,53 +1,16 @@
 <script>
-	import axios from 'axios';
-	import PopUp from '../PopUp/+page.svelte';
-	import { products, links } from '../../stores/products';
-    import {PERMITED_HOSTS} from '../../lib/helpers/constants.js';
+	import { links } from '../../stores/products';
+    import {parseUrl, checkURLEligibility, isDuplicate} from '../../lib/helpers/utility_functions.js';
 
 	let URL = '';
 	let addInput;
 
-	const parseUrl = (URL) => {
-		try {
-            if(typeof window !== 'undefined') return new window.URL(URL);
-		} catch {
-			addInput.setCustomValidity('Invalid URL');
-			addInput.reportValidity();
-			return null;
-		}
-	};
-
-	const checkURLEligibility = (urlObj) => {
-		let isURLEligible = false;
-		for (let i = 0; i < PERMITED_HOSTS.length; i++) {
-			if (urlObj.host === PERMITED_HOSTS[i].host) {
-				isURLEligible = true;
-			}
-		}
-		if (!isURLEligible) {
-			addInput.setCustomValidity(`Only allowed ${PERMITED_HOSTS.map(p => p.name).join(", ")}`);
-			addInput.reportValidity();
-		}
-        console.log(isURLEligible);
-		return isURLEligible;
-	};
-
-	const isDuplicate = (URL) => {
-        // loop over the list and check if each string includes the new url
-		if ($links.includes(URL.trim())) {
-			addInput.setCustomValidity('Duplicate URL');
-			addInput.reportValidity();
-            return true;
-        }
-        else return false;
-	};
-
 	const handleSubmit = () => {
-		const urlObj = parseUrl(URL);
+		const urlObj = parseUrl(URL, addInput);
 		if (!urlObj) return;
-		const isURLEligible = checkURLEligibility(urlObj);
+		const isURLEligible = checkURLEligibility(urlObj, addInput);
 		if (!isURLEligible) return;
-        if (isDuplicate(URL)) return;
+        if (isDuplicate(URL, addInput, $links)) return;
 		links.update((links) => [...links, URL]);
         localStorage.setItem('urls', JSON.stringify($links));
         URL = '';

@@ -3,7 +3,7 @@
 </header>
 <style>
     header {
-        height: 80px;
+        height: 70px;
         color: #fff;
         padding: 1rem;
         background-color: var(--primary);

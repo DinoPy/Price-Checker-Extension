@@ -44,10 +44,15 @@
     const host = getHost();
     const mutation = useMutation(
         (url) =>
-            axios.post(host.name === "Emag" ? "https://random-apis-server.vercel.app/api/scraper" : "http://194.233.163.205:3000/api/scraper", {
-                url: url,
-                details: host,
-            }),
+            axios.post(
+                host.name === "Emag"
+                    ? "https://random-apis-server.vercel.app/api/scraper"
+                    : "http://194.233.163.205:3000/api/scraper",
+                {
+                    url: url,
+                    details: host,
+                }
+            ),
         {
             onSuccess: (data) => {
                 const today = new Date().toLocaleDateString();

@@ -1,3 +1,4 @@
+import {PERMITED_HOSTS} from '../../lib/helpers/constants.js';
 
 /**
     * converts price from string to float;
@@ -37,3 +38,38 @@ export const parseTitle = (title) => {
     let newTitle = splitTitle.splice(0,12).join(' ') + '...';
     return newTitle;
 }
+
+export const parseUrl = (URL, input) => {
+		try {
+            if(typeof window !== 'undefined') return new window.URL(URL);
+		} catch {
+			input.setCustomValidity('Invalid URL');
+			input.reportValidity();
+			return null;
+		}
+	};
+
+export const checkURLEligibility = (urlObj, input) => {
+		let isURLEligible = false;
+		for (let i = 0; i < PERMITED_HOSTS.length; i++) {
+			if (urlObj.host === PERMITED_HOSTS[i].host) {
+				isURLEligible = true;
+			}
+		}
+		if (!isURLEligible) {
+			input.setCustomValidity(`Only allowed ${PERMITED_HOSTS.map(p => p.name).join(", ")}`);
+			input.reportValidity();
+		}
+        console.log(isURLEligible);
+		return isURLEligible;
+	};
+
+export const isDuplicate = (URL, input, links) => {
+        // loop over the list and check if each string includes the new url
+		if (links.includes(URL.trim())) {
+			input.setCustomValidity('Duplicate URL');
+			input.reportValidity();
+            return true;
+        }
+        else return false;
+	};

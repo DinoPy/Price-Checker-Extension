@@ -2,7 +2,6 @@
     import { links, error } from "../../stores/products";
     import Product from "./Product/+page.svelte";
     import PopUp from "../PopUp/+page.svelte";
-    import FreeEpicGames from "../FreeEpic/+page.svelte";
     import { flip } from "svelte/animate";
     import { send, receive } from "../../lib/helpers/transitions.js";
 </script>
@@ -24,7 +23,6 @@
         {/if}
         <!-- <button on:click={links.set(Array.from($links))}> Reset All </button> -->
     </div>
-    <FreeEpicGames />
 </div>
 
 <style>
