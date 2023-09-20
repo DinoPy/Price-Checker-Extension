@@ -1,7 +1,7 @@
 <script>
     import { useMutation } from "@sveltestack/svelte-query";
     import axios from "axios";
-    import { links, error } from "../../../stores/products.js";
+    import { links, error, priceHistoryData } from "../../../stores/products.js";
     import {
         PERMITED_HOSTS,
         REFETCH_TIME,
@@ -27,6 +27,11 @@
         lastPriceUpdate: new Date().toLocaleString(),
         pastPrices: [],
     };
+
+    const togglePriceHistoryPopUp = () => {
+        priceHistoryData.update(prev => ({ toggled: !prev.toggled, priceHistoryData: savedData.pastPrices}));
+
+    }
 
     const remove = () => {
         links.update((links) => links.filter((l) => l !== prod));
@@ -72,11 +77,11 @@
                         savedData.currentPrice || data.data.data.price,
                         "d",
                         "d"
-                    ) === 'd'
+                    ) === "d"
                 ) {
                     savedData.prevPrice = savedData.currentPrice;
                     savedData.date = today;
-                    savedData.lastPriceUpdate = (new Date()).toLocaleString();
+                    savedData.lastPriceUpdate = new Date().toLocaleString();
                 }
                 let dataToSave = {
                     ...savedData,
@@ -213,6 +218,13 @@
                             class="icon"
                             src="images/refresh.svg"
                             alt="Refresh"
+                        />
+                    </button>
+                    <button on:click={() => togglePriceHistoryPopUp() } class="icon-btn">
+                        <img
+                            class="icon"
+                            src="images/info.svg"
+                            alt="info"
                         />
                     </button>
                     <button on:click={() => remove()} class="icon-btn">

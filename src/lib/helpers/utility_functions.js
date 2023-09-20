@@ -6,7 +6,10 @@ import {PERMITED_HOSTS} from '../../lib/helpers/constants.js';
     * @return {float}             Float format of the inputed price
 */
 export const parsePrice = (priceString) => {
-    return parseFloat(priceString.replaceAll('.', '').replaceAll(',','.'));
+    let formatedString = priceString.slice(priceString.match(/\d/).index)
+    if(formatedString.includes(','))
+        return parseFloat(formatedString.replaceAll('.', '').replaceAll(',','.'));
+    return parseFloat(formatedString);
 };
 
 /**
@@ -60,7 +63,6 @@ export const checkURLEligibility = (urlObj, input) => {
 			input.setCustomValidity(`Only allowed ${PERMITED_HOSTS.map(p => p.name).join(", ")}`);
 			input.reportValidity();
 		}
-        console.log(isURLEligible);
 		return isURLEligible;
 	};
 

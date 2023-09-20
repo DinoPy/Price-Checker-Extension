@@ -13,9 +13,10 @@
     "svelte": "^4.0.5",
     "vite": "^4.4.5"
   },
-	"dependencies": {
-		"@sveltestack/svelte-query": "^1.6.0",
-		"axios": "^1.4.0",
-		"tiny-glob": "^0.2.9"
-	}
+  "dependencies": {
+    "@sveltestack/svelte-query": "^1.6.0",
+    "axios": "^1.4.0",
+    "chart.js": "^4.4.0",
+    "tiny-glob": "^0.2.9"
+  }
 }

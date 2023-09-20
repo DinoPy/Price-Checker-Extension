@@ -14,3 +14,4 @@ const data =  dataFetcher();
 export const links = writable(data);
 export const products = writable({});
 export const error = writable({duration: 3000, message: "Url not compatible at this time", isError:false});
+export const priceHistoryData = writable({toggled: false, priceHistoryData: []});
