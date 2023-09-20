@@ -30,7 +30,6 @@
 
     const togglePriceHistoryPopUp = () => {
         priceHistoryData.update(prev => ({ toggled: !prev.toggled, priceHistoryData: savedData.pastPrices}));
-
     }
 
     const remove = () => {
@@ -57,12 +56,22 @@
         return currentHost[0];
     };
     const host = getHost();
+
+    const getServerUrl = (host, stage) => {
+        switch (stage) {
+            case "Production":
+                return (host === "Emag"
+                    ? "https://random-apis-server.vercel.app/api/scraper"
+                    : "http://194.233.163.205:3000/api/scraper");
+            case "Developement": {
+                return "http://localhost:3000/api/scraper";
+            }
+        }
+    }
+
     const mutation = useMutation(
         (url) =>
-            axios.post(
-                host.name === "Emag"
-                    ? "https://random-apis-server.vercel.app/api/scraper"
-                    : "http://194.233.163.205:3000/api/scraper",
+            axios.post(getServerUrl(host.name, "Developement"),
                 {
                     url: url,
                     details: host,

@@ -26,3 +26,9 @@
 </script>
 
 <canvas bind:this={chartCanvas} id='priceHistory'> </canvas>
+
+<style>
+    canvas {
+        height: 350px;
+    }
+</style>

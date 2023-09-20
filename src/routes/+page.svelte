@@ -18,9 +18,9 @@
 </svelte:head>
 
 <QueryClientProvider client={queryClient}>
+    {#if $priceHistoryData.toggled} <PriceHistory /> {/if}
     <Header />
     <FreeGames />
-    {#if $priceHistoryData.toggled} <PriceHistory /> {/if}
     <div class="mainContainer">
         <AddContainer />
         <ProductContainer />
