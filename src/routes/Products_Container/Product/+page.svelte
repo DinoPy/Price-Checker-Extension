@@ -25,12 +25,22 @@
         isGenius: false,
         stock: null,
         lastPriceUpdate: new Date().toLocaleString(),
+        pastPrices: [],
     };
 
     const remove = () => {
         links.update((links) => links.filter((l) => l !== prod));
         localStorage.setItem("urls", JSON.stringify($links));
         localStorage.removeItem(prod);
+    };
+
+    const processSavedPricesArr = (newPrice, currentList) => {
+        if (currentList.length > 30) currentList.shift();
+        currentList.push({
+            date: new Date().toLocaleString(),
+            price: newPrice,
+        });
+        return currentList;
     };
 
     const getHost = () => {
@@ -56,6 +66,18 @@
         {
             onSuccess: (data) => {
                 const today = new Date().toLocaleDateString();
+                if (
+                    comparePrice(
+                        data.data.data.price,
+                        savedData.currentPrice || data.data.data.price,
+                        "d",
+                        "d"
+                    ) === 'd'
+                ) {
+                    savedData.prevPrice = savedData.currentPrice;
+                    savedData.date = today;
+                    savedData.lastPriceUpdate = (new Date()).toLocaleString();
+                }
                 let dataToSave = {
                     ...savedData,
                     title: data.data.data.title,
@@ -68,32 +90,39 @@
                 };
                 if (
                     savedData.prevPrice === "No saved price" ||
-                    savedData.date !== today
+                    (savedData.date !== today &&
+                        comparePrice(
+                            dataToSave.currentPrice,
+                            dataToSave.prevPrice,
+                            "d",
+                            "d"
+                        ) !== "d")
                 ) {
-                    dataToSave = {
-                        ...dataToSave,
-                        prevPrice: data.data.data.price,
-                        date: today,
-                    };
+                    dataToSave.prevPrice = data.data.data.price;
+                    dataToSave.date = today;
                 }
+                if (
+                    dataToSave.pastPrices < 1 ||
+                    !dataToSave.hasOwnProperty("pastPrices")
+                )
+                    dataToSave.pastPrices = processSavedPricesArr(
+                        data.data.data.price,
+                        []
+                    );
                 if (
                     comparePrice(
                         dataToSave.currentPrice,
                         dataToSave.prevPrice,
-                        "different",
-                        "different"
-                    ) === "different"
+                        "d",
+                        "d"
+                    ) === "d"
                 ) {
                     dataToSave.lastPriceUpdate = new Date().toLocaleString();
+                    dataToSave.pastPrices = processSavedPricesArr(
+                        data.data.data.price,
+                        dataToSave.pastPrices
+                    );
                 }
-                console.log(
-                    comparePrice(
-                        dataToSave.currentPrice,
-                        dataToSave.prevPrice,
-                        "different",
-                        "different"
-                    )
-                );
                 localStorage.setItem(prod, JSON.stringify(dataToSave));
                 savedData = dataToSave;
             },
@@ -221,6 +250,7 @@
         position: relative;
         font-size: clamp(14px, 1vw, 18px);
         flex-wrap: wrap;
+        box-shadow: 0px 2px 5px 0px #0003;
     }
     .right-container {
         display: flex;
@@ -275,7 +305,7 @@
         display: flex;
         gap: 0.4em;
         justify-items: center;
-        font-size: 0.7em;
+        font-size: 0.85em;
     }
     .savedData {
         font-size: 0.6em;
