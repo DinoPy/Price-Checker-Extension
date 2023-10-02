@@ -62,7 +62,7 @@
             case "Production":
                 return (host === "Emag"
                     ? "https://random-apis-server.vercel.app/api/scraper"
-                    : "http://194.233.163.205:3000/api/scraper");
+                    : "https://dinodev.dev/api/scraper");
             case "Developement": {
                 return "http://localhost:3000/api/scraper";
             }
@@ -71,7 +71,7 @@
 
     const mutation = useMutation(
         (url) =>
-            axios.post(getServerUrl(host.name, "Developement"),
+            axios.post(getServerUrl(host.name, "Production"),
                 {
                     url: url,
                     details: host,
@@ -80,6 +80,7 @@
         {
             onSuccess: (data) => {
                 const today = new Date().toLocaleDateString();
+                let dataToSave = {...savedData};
                 if (
                     comparePrice(
                         data.data.data.price,
@@ -88,12 +89,16 @@
                         "d"
                     ) === "d"
                 ) {
+                    dataToSave.pastPrices = processSavedPricesArr(
+                        data.data.data.price,
+                        dataToSave.pastPrices
+                    );
                     savedData.prevPrice = savedData.currentPrice;
                     savedData.date = today;
                     savedData.lastPriceUpdate = new Date().toLocaleString();
                 }
-                let dataToSave = {
-                    ...savedData,
+                dataToSave = {
+                    ...dataToSave,
                     title: data.data.data.title,
                     currentPrice: data.data.data.price,
                     src: data.data.data.src,
@@ -123,20 +128,6 @@
                         data.data.data.price,
                         []
                     );
-                if (
-                    comparePrice(
-                        dataToSave.currentPrice,
-                        dataToSave.prevPrice,
-                        "d",
-                        "d"
-                    ) === "d"
-                ) {
-                    dataToSave.lastPriceUpdate = new Date().toLocaleString();
-                    dataToSave.pastPrices = processSavedPricesArr(
-                        data.data.data.price,
-                        dataToSave.pastPrices
-                    );
-                }
                 localStorage.setItem(prod, JSON.stringify(dataToSave));
                 savedData = dataToSave;
             },
