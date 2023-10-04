@@ -1,4 +1,4 @@
-import {PERMITED_HOSTS} from '../../lib/helpers/constants.js';
+import { PERMITED_HOSTS } from '../../lib/helpers/constants.js';
 
 /**
     * converts price from string to float;
@@ -7,8 +7,8 @@ import {PERMITED_HOSTS} from '../../lib/helpers/constants.js';
 */
 export const parsePrice = (priceString) => {
     let formatedString = priceString.slice(priceString.match(/\d/).index)
-    if(formatedString.includes(','))
-        return parseFloat(formatedString.replaceAll('.', '').replaceAll(',','.'));
+    if (formatedString.includes(','))
+        return parseFloat(formatedString.replaceAll('.', '').replaceAll(',', '.'));
     return parseFloat(formatedString);
 };
 
@@ -38,40 +38,41 @@ export const comparePrice = (newPrice, oldPrice, goodColor, badColor) => {
 export const parseTitle = (title) => {
     let splitTitle = title.split(' ');
     if (splitTitle.length <= 12) return title;
-    let newTitle = splitTitle.splice(0,12).join(' ') + '...';
+    let newTitle = splitTitle.splice(0, 12).join(' ') + '...';
     return newTitle;
 }
 
 export const parseUrl = (URL, input) => {
-		try {
-            if(typeof window !== 'undefined') return new window.URL(URL);
-		} catch {
-			input.setCustomValidity('Invalid URL');
-			input.reportValidity();
-			return null;
-		}
-	};
+    try {
+        if (typeof window !== 'undefined') return new window.URL(URL);
+    } catch {
+        input.setCustomValidity('Invalid URL');
+        input.reportValidity();
+        return null;
+    }
+};
 
 export const checkURLEligibility = (urlObj, input) => {
-		let isURLEligible = false;
-		for (let i = 0; i < PERMITED_HOSTS.length; i++) {
-			if (urlObj.host === PERMITED_HOSTS[i].host) {
-				isURLEligible = true;
-			}
-		}
-		if (!isURLEligible) {
-			input.setCustomValidity(`Only allowed ${PERMITED_HOSTS.map(p => p.name).join(", ")}`);
-			input.reportValidity();
-		}
-		return isURLEligible;
-	};
+    let isURLEligible = false;
+    for (let i = 0; i < PERMITED_HOSTS.length; i++) {
+        if (urlObj.host === PERMITED_HOSTS[i].host) {
+            isURLEligible = true;
+        }
+    }
+    if (!isURLEligible) {
+        input.setCustomValidity(`Only allowed ${PERMITED_HOSTS.map(p => p.name).join(", ")}`);
+        input.reportValidity();
+    }
+    return isURLEligible;
+};
 
 export const isDuplicate = (URL, input, links) => {
-        // loop over the list and check if each string includes the new url
-		if (links.includes(URL.trim())) {
-			input.setCustomValidity('Duplicate URL');
-			input.reportValidity();
+    for (let i of links) {
+        if (i.includes(URL.trim())) {
+            input.setCustomValidity('Duplicate URL');
+            input.reportValidity();
             return true;
         }
-        else return false;
-	};
+    }
+    return false;
+};

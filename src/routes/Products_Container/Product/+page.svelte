@@ -315,6 +315,7 @@
     .prices {
         font-family: var(--text-secondary);
         display: flex;
+        justify-content: flex-end;
         gap: 0.4em;
         justify-items: center;
         font-size: 0.85em;

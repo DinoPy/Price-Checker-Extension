@@ -15,12 +15,14 @@
 
     --text-primary: 'Handjet';
     --text-secondary: 'Open Sans', sans-serif;
+    --overflow-status: 'inherit';
 }
 body {
     background-color: var(--background);
     font-family: var(--text-primary);
     color: var(--textColor);
     margin: 0;
+    overflow: var(--overflow-status)
 }
 a {
     color: var(--textColor);

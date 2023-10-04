@@ -18,12 +18,14 @@
 </svelte:head>
 
 <QueryClientProvider client={queryClient}>
-    {#if $priceHistoryData.toggled} <PriceHistory /> {/if}
-    <Header />
-    <FreeGames />
-    <div class="mainContainer">
-        <AddContainer />
-        <ProductContainer />
+    <div class={$priceHistoryData.toggled ? "body--overflow-hidden" : ""}>
+        {#if $priceHistoryData.toggled} <PriceHistory /> {/if}
+        <Header />
+        <FreeGames />
+        <div class="mainContainer">
+            <AddContainer />
+            <ProductContainer />
+        </div>
     </div>
 </QueryClientProvider>
 
@@ -33,4 +35,8 @@
         padding: 0 2em 2em;
         position: relative;
     }
+
+   .body--overflow-hidden {
+       overflow: hidden;
+   }
 </style>
