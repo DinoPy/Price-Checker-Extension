@@ -5,11 +5,11 @@
     import SimpleProductContainer from "./SimpleProdContainer/+page.svelte";
 
     const epicGames = useMutation(
-        () => axios.post("https://dinodev.dev/api/epicFreeGames")
+        () => axios.post("https://dinodev.dev/api/scraper/freeGames/epicgames")
     );
     $epicGames.mutate();
     const steamGames = useMutation(
-        () => axios.post("https://dinodev.dev/api/steamSpecialOffer")
+        () => axios.post("https://dinodev.dev/api/scraper/freegames/steam")
     );
     $steamGames.mutate();
     $: console.log($steamGames.data?.data);

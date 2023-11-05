@@ -57,21 +57,26 @@
     };
     const host = getHost();
 
+    /*
+
+                return (host === "Emag"
+                    ? "https://random-apis-server.vercel.app/api/scraper"
+                    : `https://dinodev.dev/api/scraper/${host}`);
+                */
+
     const getServerUrl = (host, stage) => {
         switch (stage) {
             case "Production":
-                return (host === "Emag"
-                    ? "https://random-apis-server.vercel.app/api/scraper"
-                    : "https://dinodev.dev/api/scraper");
+                    return `https://dinodev.dev/api/scraper/${host}`
             case "Developement": {
-                return "http://localhost:3000/api/scraper";
+                return `https://localhost/api/scraper/${host}`;
             }
         }
     }
 
     const mutation = useMutation(
         (url) =>
-            axios.post(getServerUrl(host.name, "Production"),
+            axios.post(getServerUrl(host.name, "Developement"),
                 {
                     url: url,
                     details: host,
@@ -134,7 +139,7 @@
             onError: async (err) => {
                 attempts++;
                 console.log(prod, attempts, savedData.prevPrice);
-                if (attempts < 3) {
+                if (attempts < 1) {
                     await new Promise((resolve, reject) =>
                         setTimeout(() => {
                             resolve($mutation.mutate(prod));
