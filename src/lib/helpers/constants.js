@@ -7,6 +7,8 @@ export const PERMITED_HOSTS = [
     {name: 'Altex', host: 'altex.ro', icon:'images/icons/altex.ico'},
     {name: 'Cel', host: 'www.cel.ro', icon:'images/icons/cel.ico'},
     {name: 'Romstal', host: 'www.romstal.ro', icon:'images/icons/romstal.png'},
+    {name: 'Gymbeam', host: 'gymbeam.ro', icon:'images/icons/gymbeam.png'},
+    {name: 'Genius', host: 'geniusnutrition.ro', icon:'images/icons/genius.png'},
 ];
 
 export const REFETCH_TIME =  1000 * 60 * 60 * 3;

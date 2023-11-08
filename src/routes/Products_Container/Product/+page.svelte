@@ -1,7 +1,11 @@
 <script>
     import { useMutation } from "@sveltestack/svelte-query";
     import axios from "axios";
-    import { links, error, priceHistoryData } from "../../../stores/products.js";
+    import {
+        links,
+        error,
+        priceHistoryData,
+    } from "../../../stores/products.js";
     import {
         PERMITED_HOSTS,
         REFETCH_TIME,
@@ -29,8 +33,11 @@
     };
 
     const togglePriceHistoryPopUp = () => {
-        priceHistoryData.update(prev => ({ toggled: !prev.toggled, priceHistoryData: savedData.pastPrices}));
-    }
+        priceHistoryData.update((prev) => ({
+            toggled: !prev.toggled,
+            priceHistoryData: savedData.pastPrices,
+        }));
+    };
 
     const remove = () => {
         links.update((links) => links.filter((l) => l !== prod));
@@ -64,28 +71,26 @@
                     : `https://dinodev.dev/api/scraper/${host}`);
                 */
 
-    const getServerUrl = (host, stage) => {
+    const getServerUrl = ( stage) => {
         switch (stage) {
             case "Production":
-                    return `https://dinodev.dev/api/scraper/${host}`
+                return `https://dinodev.dev/api/scraper/`;
             case "Developement": {
-                return `https://localhost/api/scraper/${host}`;
+                return `https://localhost/api/scraper/`;
             }
         }
-    }
+    };
 
     const mutation = useMutation(
         (url) =>
-            axios.post(getServerUrl(host.name, "Developement"),
-                {
-                    url: url,
-                    details: host,
-                }
-            ),
+            axios.post(getServerUrl("Production") + host.name, {
+                url: url,
+                details: host,
+            }),
         {
             onSuccess: (data) => {
                 const today = new Date().toLocaleDateString();
-                let dataToSave = {...savedData};
+                let dataToSave = { ...savedData };
                 if (
                     comparePrice(
                         data.data.data.price,
@@ -147,7 +152,7 @@
                     );
                 } else {
                     attempts = 0;
-                    if (err && err.response && err.response.status === 404) {
+                    if (err && err.response && err.response.status === 404 && !savedData.title) {
                         remove();
                         error.update((e) => ({
                             ...e,
@@ -178,6 +183,29 @@
         savedData.lastFetchTime === null
     )
         $mutation.mutate(prod);
+
+    const deleteUrl = useMutation(
+        (url) =>
+            axios.delete(getServerUrl( "Production") + `delete?url=${prod}`, {
+                url: url,
+                details: host,
+            }),
+        {
+            onSuccess: () => {
+                links.update((links) => links.filter((l) => l !== prod));
+                localStorage.setItem("urls", JSON.stringify($links));
+                localStorage.removeItem(prod);
+            },
+            onError: async (err) => {
+                // do something
+                error.update((e) => ({
+                    ...e,
+                    isError: true,
+                    message: "Deletion failed"
+                }));
+            },
+        }
+    );
 </script>
 
 <div class="product-container">
@@ -225,14 +253,13 @@
                             alt="Refresh"
                         />
                     </button>
-                    <button on:click={() => togglePriceHistoryPopUp() } class="icon-btn">
-                        <img
-                            class="icon"
-                            src="images/info.svg"
-                            alt="info"
-                        />
+                    <button
+                        on:click={() => togglePriceHistoryPopUp()}
+                        class="icon-btn"
+                    >
+                        <img class="icon" src="images/info.svg" alt="info" />
                     </button>
-                    <button on:click={() => remove()} class="icon-btn">
+                    <button on:click={() => $deleteUrl.mutate(prod)} class="icon-btn">
                         <img
                             class="icon"
                             src="images/delete.svg"
